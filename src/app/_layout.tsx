@@ -4,15 +4,11 @@ import { StatusBar } from "react-native";
 import { ThemeProvider } from "styled-components/native";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
-import { replace } from "expo-router/build/global-state/routing";
 import { AuthProvider } from "@/context/AuthContext";
 
 import { useAuth } from "@/hooks/useAuth";
 
-const getToken = () => {
-  const token = SecureStore.getItem("authToken");
-  return token;
-};
+
 const InitialLayout = () => {
   const { token, addToken } = useAuth();
 
@@ -23,7 +19,7 @@ const InitialLayout = () => {
     };
     getToken();
     if (token) {
-      router.replace("/home");
+      router.replace("/Home");
     } else if (!token) {
       router.replace("/login");
     }

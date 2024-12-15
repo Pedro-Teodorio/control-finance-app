@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "./styles";
-import { Icon } from "@/components/Icon";
+import  Icon  from "@/components/Icon";
 import theme from "@/theme";
 import { Header } from "@/components/Header";
 import { Form } from "@/components/Form";
@@ -12,6 +12,7 @@ import { getRealm } from "@/databases/realm";
 import uuid from "react-native-uuid";
 import * as SecureStore from "expo-secure-store";
 import { useAuth } from "@/hooks/useAuth";
+import * as Crypto from "expo-crypto";
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
@@ -23,13 +24,14 @@ export default function RegisterScreen() {
   }
   async function handleRegister() {
     const realm = await getRealm();
+    const passwordHashed = await hashPassword(password);
     try {
       realm.write(() => {
         const created = realm.create("User", {
           _id: uuid.v4(),
           name: name,
           email: email,
-          password: password,
+          password: passwordHashed,
           token: generateToken(addToken),
           created_at: new Date(),
         });
@@ -87,4 +89,12 @@ export const generateToken = (addToken: (text: string) => void) => {
   SecureStore.setItem("authToken", token);
   addToken(token);
   return token;
+};
+
+export const hashPassword = async (password: string) => {
+  const digest = await Crypto.digestStringAsync(
+    Crypto.CryptoDigestAlgorithm.SHA256,
+    password
+  );
+  return digest;
 };

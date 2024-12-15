@@ -1,6 +1,6 @@
 import React from "react";
 import { Container, Input } from "./styles";
-import { Icon } from "../Icon";
+import Icon from "../Icon";
 import { TextInputProps } from "react-native";
 import theme from "@/theme";
 

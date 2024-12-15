@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Container } from "./styles";
-import { Icon } from "@/components/Icon";
+import  Icon  from "@/components/Icon";
 import theme from "@/theme";
 import { Header } from "@/components/Header";
 import { Form } from "@/components/Form";
@@ -12,6 +12,7 @@ import { getRealm } from "@/databases/realm";
 import { Alert } from "react-native";
 import { generateToken } from "../Register";
 import { useAuth } from "@/hooks/useAuth";
+import { hashPassword } from "@/screens/Register";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -22,10 +23,11 @@ export default function LoginScreen() {
   }
   async function handleLogin() {
     const realm = await getRealm();
+    const passwordHashed = await hashPassword(password);
 
     const isEmailValid = realm.objects("User").filtered("email = $0", email)[0];
 
-    const isPasswordValid = isEmailValid?.password === password;
+    const isPasswordValid = isEmailValid?.password === passwordHashed;
 
     if (isEmailValid && isPasswordValid) {
       const id = isEmailValid._id;
@@ -39,6 +41,7 @@ export default function LoginScreen() {
       Alert.alert("Senha", "Senha incorreta");
     }
   }
+
 
   return (
     <Container>
