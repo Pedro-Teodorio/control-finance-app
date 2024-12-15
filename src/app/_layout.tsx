@@ -5,29 +5,31 @@ import { ThemeProvider } from "styled-components/native";
 import * as SecureStore from "expo-secure-store";
 import { useEffect } from "react";
 import { replace } from "expo-router/build/global-state/routing";
+import { AuthProvider } from "@/context/AuthContext";
 
-const getToken =  () => {
-  const token =  SecureStore.getItem('authToken');
+import { useAuth } from "@/hooks/useAuth";
+
+const getToken = () => {
+  const token = SecureStore.getItem("authToken");
   return token;
 };
-const  InitialLayout =  () => {
-  const token = getToken()
+const InitialLayout = () => {
+  const { token, addToken } = useAuth();
 
-  useEffect(()=>{
-    if(token){
-      router.replace('/home')
-    }else if(!token){
-      router.replace('/login')
+  useEffect(() => {
+    const getToken = () => {
+      const storedToken = SecureStore.getItem("authToken");
+      addToken(storedToken!);
+    };
+    getToken();
+    if (token) {
+      router.replace("/home");
+    } else if (!token) {
+      router.replace("/login");
     }
-  },[token])
+  }, [token]);
+ 
 
-  SecureStore.setItem('authToken','sajhfgsjhkfgsjfhgs')
-  console.log(getToken())
-
-  SecureStore.setItem('authToken','my-token')
-  console.log(getToken())
-
-    
   return <Slot screenOptions={{ headerShown: false }} />;
 };
 
@@ -35,7 +37,9 @@ export default function RootLayout() {
   return (
     <ThemeProvider theme={theme}>
       <StatusBar barStyle={"dark-content"} />
-      <InitialLayout />
+      <AuthProvider>
+        <InitialLayout />
+      </AuthProvider>
     </ThemeProvider>
   );
 }

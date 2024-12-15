@@ -11,27 +11,36 @@ import { router } from "expo-router";
 import { getRealm } from "@/databases/realm";
 import uuid from "react-native-uuid";
 import * as SecureStore from "expo-secure-store";
+import { useAuth } from "@/hooks/useAuth";
 
 export default function RegisterScreen() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const { addToken } = useAuth();
   function handleToBack() {
     router.back();
   }
   async function handleRegister() {
     const realm = await getRealm();
+    try {
+      realm.write(() => {
+        const created = realm.create("User", {
+          _id: uuid.v4(),
+          name: name,
+          email: email,
+          password: password,
+          token: generateToken(addToken),
+          created_at: new Date(),
+        });
 
-    realm.write(() => {
-      realm.create("User", {
-        _id: uuid.v4(),
-        name: name,
-        email: email,
-        password: password,
-        token: "string",
-        created_at: new Date(),
+        console.log("Usuário criado ====>", created);
       });
-    });
+    } catch {
+      console.log("Erro ao criar usuário");
+    } finally {
+      realm.close();
+    }
   }
   return (
     <Container>
@@ -73,8 +82,9 @@ export default function RegisterScreen() {
     </Container>
   );
 }
-export const generateToken = () => {
+export const generateToken = (addToken: (text: string) => void) => {
   const token = uuid.v4();
   SecureStore.setItem("authToken", token);
+  addToken(token);
   return token;
 };
