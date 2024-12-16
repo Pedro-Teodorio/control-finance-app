@@ -8,7 +8,6 @@ import { AuthProvider } from "@/context/AuthContext";
 
 import { useAuth } from "@/hooks/useAuth";
 
-
 const InitialLayout = () => {
   const { token, addToken } = useAuth();
 
@@ -19,12 +18,11 @@ const InitialLayout = () => {
     };
     getToken();
     if (token) {
-      router.replace("/Home");
+      router.replace("/home");
     } else if (!token) {
       router.replace("/login");
     }
   }, [token]);
- 
 
   return <Slot screenOptions={{ headerShown: false }} />;
 };

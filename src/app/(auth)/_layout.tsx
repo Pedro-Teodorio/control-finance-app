@@ -13,12 +13,15 @@ export default function AuthLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.COLORS.EMERALD_500,
+        
       }}
     >
       <Tabs.Screen
-        name="Home"
+        name="home"
         options={{
+          title: 'Home',
           tabBarIcon: HomeTabIcon,
+         
         }}
       />
     </Tabs>

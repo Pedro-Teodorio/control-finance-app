@@ -74,7 +74,7 @@ export default function RegisterScreen() {
             secureTextEntry: true,
           }}
         />
-        <Button title="Entrar" onPress={handleRegister} />
+        <Button title="Cadastrar" onPress={handleRegister} />
         <FormLink
           text="Já tem conta?"
           textLink="Acesse agora"
