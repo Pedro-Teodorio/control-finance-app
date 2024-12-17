@@ -15,6 +15,7 @@ export default {
 
     ZINC_50: "#fafafa",
     ZINC_100: "#f4f4f5",
+    ZINC_200: "#e4e4e7",
     ZINC_300: "#d4d4d8",
     ZINC_400: "#a1a1aa",
     ZINC_950: "#09090b",

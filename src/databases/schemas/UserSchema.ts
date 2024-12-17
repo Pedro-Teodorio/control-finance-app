@@ -8,7 +8,9 @@ export const UserSchema: ObjectSchema = {
     email: "string",
     password: "string",
     token: "string",
-    created_at: "date"
+    balance: "double",
+    created_at: "date",
+    receives: "Receives[]",
   },
-  primaryKey: "_id"
+  primaryKey: "_id",
 };

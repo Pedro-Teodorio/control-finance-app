@@ -35,6 +35,12 @@ export const CurrentBalanceContent = styled.View`
   align-items: center;
   gap: 8px;
 `;
+export const SkeletonReceives = styled.View`
+  width: 144px;
+  padding: 16px;
+  background-color: ${({ theme }) => theme.COLORS.ZINC_200};
+  border-radius: 10px;
+`;
 export const CurrentBalanceContentText = styled.View`
   flex-direction: column;
   justify-content: space-between;

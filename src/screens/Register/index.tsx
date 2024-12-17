@@ -27,13 +27,16 @@ export default function RegisterScreen() {
     const passwordHashed = await hashPassword(password);
     try {
       realm.write(() => {
+        console.log(typeof 0.0)
         const created = realm.create("User", {
           _id: uuid.v4(),
           name: name,
           email: email,
           password: passwordHashed,
           token: generateToken(addToken),
+          balance: 0,
           created_at: new Date(),
+          receives:[]
         });
 
         console.log("Usuário criado ====>", created);

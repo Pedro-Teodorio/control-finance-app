@@ -13,11 +13,13 @@ import {
 import { IUser } from "@/models/IUser";
 import { getRealm } from "@/databases/realm";
 import { useAuth } from "@/hooks/useAuth";
-import { Button, StatusBar, Text } from "react-native";
+import { StatusBar } from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { IconButton } from "@/components/IconButton";
 import theme from "@/theme";
 import { DetailsFinanceCard } from "@/components/DetailsFinanceCard";
+import { IReceives } from "@/models/IReceives";
+import uuid from "react-native-uuid";
 
 export default function HomeScreen() {
   const [user, setUser] = useState<IUser>();
@@ -33,7 +35,48 @@ export default function HomeScreen() {
   }
   useEffect(() => {
     fetchUser();
-  }, []);
+    console.log(user);
+
+    return () => {};
+  }, [user?.receives.values]);
+
+  async function createReceive() {
+    const realm = await getRealm();
+    const data = new Date();
+    const dataFormatada = data.toLocaleString("pt-BR", { dateStyle: "short" });
+
+    try {
+      realm.write(() => {
+        const selectedUser = realm
+          .objects<IUser>("User")
+          .filtered("token = $0", token)[0];
+
+        const entrada = realm.create<IReceives>("Receives", {
+          _id: uuid.v4(),
+          description: "Entrada inicial",
+          value: 1200,
+          type: "entry",
+          date: dataFormatada,
+          created_at: new Date(),
+        });
+
+        const saida = realm.create<IReceives>("Receives", {
+          _id: uuid.v4(),
+          description: "Pagamento luz",
+          value: 22.44,
+          type: "exit",
+          date: dataFormatada,
+          created_at: new Date(),
+        });
+
+        selectedUser.receives.push(entrada);
+        selectedUser.receives.push(saida);
+        selectedUser.balance = entrada.value;
+      });
+    } catch {
+      console.log("Erro ao criar receita");
+    }
+  }
 
   async function logout() {
     await SecureStore.deleteItemAsync("authToken");
@@ -41,7 +84,10 @@ export default function HomeScreen() {
   }
   return (
     <Container>
-      <StatusBar backgroundColor={theme.COLORS.EMERALD_500} barStyle={"default"}/>
+      <StatusBar
+        backgroundColor={theme.COLORS.EMERALD_500}
+        barStyle={"default"}
+      />
       <Header>
         <GreetingSection>
           <UserInitial>
@@ -61,8 +107,7 @@ export default function HomeScreen() {
         />
       </Header>
       <Content>
-
-      <DetailsFinanceCard/>
+        <DetailsFinanceCard balance={user?.balance} receives={user?.receives} />
       </Content>
     </Container>
   );
