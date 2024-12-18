@@ -30,7 +30,6 @@ const InitialLayout = () => {
 export default function RootLayout() {
   return (
     <ThemeProvider theme={theme}>
-      <StatusBar barStyle={"dark-content"} />
       <AuthProvider>
         <InitialLayout />
       </AuthProvider>

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Container,
   Content,
@@ -13,13 +13,14 @@ import {
 import { IUser } from "@/models/IUser";
 import { getRealm } from "@/databases/realm";
 import { useAuth } from "@/hooks/useAuth";
-import { StatusBar } from "react-native";
+import { StatusBar} from "react-native";
 import * as SecureStore from "expo-secure-store";
 import { IconButton } from "@/components/IconButton";
 import theme from "@/theme";
 import { DetailsFinanceCard } from "@/components/DetailsFinanceCard";
 import { IReceives } from "@/models/IReceives";
 import uuid from "react-native-uuid";
+import { useFocusEffect } from "expo-router";
 
 export default function HomeScreen() {
   const [user, setUser] = useState<IUser>();
@@ -33,12 +34,15 @@ export default function HomeScreen() {
       .filtered("token = $0", token)[0];
     setUser(userFetch);
   }
-  useEffect(() => {
-    fetchUser();
-    console.log(user);
 
-    return () => {};
-  }, [user?.receives.values]);
+  useFocusEffect(
+    useCallback(() => {
+      fetchUser();
+      StatusBar.setBackgroundColor(theme.COLORS.EMERALD_500)
+      StatusBar.setBarStyle('light-content')
+      
+    }, [])
+  );
 
   async function createReceive() {
     const realm = await getRealm();
@@ -84,10 +88,7 @@ export default function HomeScreen() {
   }
   return (
     <Container>
-      <StatusBar
-        backgroundColor={theme.COLORS.EMERALD_500}
-        barStyle={"default"}
-      />
+      <StatusBar />
       <Header>
         <GreetingSection>
           <UserInitial>
