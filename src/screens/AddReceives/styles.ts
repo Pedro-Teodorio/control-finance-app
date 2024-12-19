@@ -13,7 +13,6 @@ export const Container = styled.View`
 
 export const Header = styled.View<HeaderProps>`
   background-color: ${({ color }) => color};
-
 `;
 
 export const ReceiveSwitchContent = styled.View`
@@ -50,11 +49,18 @@ export const ValueReceiveContent = styled.View`
   width: 100%;
   flex-direction: row;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
+  gap: 8px;
 `;
-
-export const ValueReceiveInput = styled.TextInput`
-height: 56px;
-  font-size: 56px;
+export const ValueReceiveLabel = styled.Text`
+  margin-left: 20px;
+  font-size: 38px;
   color: ${({ theme }) => theme.COLORS.WHITE};
+`;
+export const ValueReceiveInput = styled.TextInput`
+  width: 67%;
+  height: 56px;
+  font-size: 36px;
+  color: ${({ theme }) => theme.COLORS.WHITE};
+  font-weight: bold;
 `;

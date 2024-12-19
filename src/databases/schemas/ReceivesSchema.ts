@@ -4,7 +4,6 @@ export const ReceivesSchema: ObjectSchema = {
   name: "Receives",
   properties: {
     _id: "string",
-    description: "string",
     value: "double",
     type: "string",
     date: "string",

@@ -9,7 +9,7 @@ import { Button } from "@/components/Button";
 import { FormLink } from "@/components/FormLink";
 import { router } from "expo-router";
 import { getRealm } from "@/databases/realm";
-import { Alert } from "react-native";
+import { Alert, StatusBar } from "react-native";
 import { generateToken } from "../Register";
 import { useAuth } from "@/hooks/useAuth";
 import { hashPassword } from "@/screens/Register";
@@ -45,6 +45,7 @@ export default function LoginScreen() {
 
   return (
     <Container>
+      <StatusBar barStyle={"dark-content"} backgroundColor={theme.COLORS.BACKGROUND}/>
       <Icon
         name="CircleDollarSign"
         size={120}

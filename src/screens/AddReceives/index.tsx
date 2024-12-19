@@ -8,61 +8,67 @@ import {
   Header,
   ValueReceiveContent,
   ValueReceiveInput,
+  ValueReceiveLabel,
 } from "./styles";
 import { StatusBar } from "react-native";
 
 import theme from "@/theme";
 import { useFocusEffect } from "expo-router";
-import { IconButton } from "@/components/IconButton";
 import { KeyboardReceives } from "@/components/KeyBoardReceives";
 
 export default function AddReceivesScreen() {
   const [receives, setReceives] = useState("Despesas");
-  const [valueReceive,setValueReceive] = useState('')
- 
+  const [displayValue, setDisplayValue] = useState("0");
 
   useFocusEffect(
     useCallback(() => {
       StatusBar.setBackgroundColor(theme.COLORS.RED_400);
       StatusBar.setBarStyle("light-content");
-      setReceives("Despesas");
-      setValueReceive('')
+      setReceives("exit");
+      setDisplayValue("0");
     }, [])
   );
 
   function changeColorHeader() {
-    if (receives === "Despesas") {
+    if (receives === "exit") {
       StatusBar.setBackgroundColor(theme.COLORS.RED_400);
       return theme.COLORS.RED_400;
-    } else if (receives === "Receita") {
+    } else if (receives === "entry") {
       StatusBar.setBackgroundColor(theme.COLORS.EMERALD_500);
       return theme.COLORS.EMERALD_500;
     }
   }
 
-
   return (
     <Container>
-      <StatusBar/>
+      <StatusBar animated />
       <Header color={changeColorHeader()}>
         <ReceiveSwitchContent>
-          <ReceiveSwitch onPress={() => setReceives("Despesas")}>
+          <ReceiveSwitch onPress={() => setReceives("exit")}>
             <ReceiveSwitchText>Despesas</ReceiveSwitchText>
-            {receives === "Despesas" && <ReceiveSwitchIndicator />}
+            {receives === "exit" && <ReceiveSwitchIndicator />}
           </ReceiveSwitch>
 
-          <ReceiveSwitch onPress={() => setReceives("Receita")}>
+          <ReceiveSwitch onPress={() => setReceives("entry")}>
             <ReceiveSwitchText>Receita</ReceiveSwitchText>
-            {receives === "Receita" && <ReceiveSwitchIndicator />}
+            {receives === "entry" && <ReceiveSwitchIndicator />}
           </ReceiveSwitch>
         </ReceiveSwitchContent>
 
         <ValueReceiveContent>
-          <ValueReceiveInput value={valueReceive} />
-          <IconButton color="transparent" colorIcon={theme.COLORS.WHITE} nameIcon="Delete" sizeIcon={48}/>
+          <ValueReceiveLabel>R$</ValueReceiveLabel>
+          <ValueReceiveInput
+            value={displayValue}
+            editable={false}
+            maxLength={15}
+          />
         </ValueReceiveContent>
       </Header>
-      <KeyboardReceives/>
+      <KeyboardReceives
+        keyboardChange={setDisplayValue}
+        value={displayValue}
+        receiveValue={receives}
+      />
     </Container>
   );
 }

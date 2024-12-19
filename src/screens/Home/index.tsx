@@ -57,7 +57,6 @@ export default function HomeScreen() {
 
         const entrada = realm.create<IReceives>("Receives", {
           _id: uuid.v4(),
-          description: "Entrada inicial",
           value: 1200,
           type: "entry",
           date: dataFormatada,
@@ -66,7 +65,6 @@ export default function HomeScreen() {
 
         const saida = realm.create<IReceives>("Receives", {
           _id: uuid.v4(),
-          description: "Pagamento luz",
           value: 22.44,
           type: "exit",
           date: dataFormatada,
@@ -88,7 +86,7 @@ export default function HomeScreen() {
   }
   return (
     <Container>
-      <StatusBar />
+      <StatusBar animated/>
       <Header>
         <GreetingSection>
           <UserInitial>
