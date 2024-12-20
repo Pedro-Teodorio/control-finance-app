@@ -51,10 +51,11 @@ export function DetailsFinanceCard({ balance, receives }: Props) {
             )}
           </CurrentBalanceContentText>
           <IconButton
+            width="72px"
             color="transparent"
             colorIcon={theme.COLORS.ZINC_400}
             sizeIcon={24}
-            nameIcon={isVisibleReceives ? 'Eye' : 'EyeClosed'}
+            nameIcon={isVisibleReceives ? "Eye" : "EyeClosed"}
             onPress={() => setIsVisibleReceives(!isVisibleReceives)}
           />
         </CurrentBalanceContent>

@@ -17,8 +17,8 @@ export default function AuthLayout() {
       screenOptions={{
         headerShown: false,
         tabBarActiveTintColor: theme.COLORS.EMERALD_500,
-        tabBarStyle: {height:64,paddingTop:8}
-        
+        tabBarStyle: {height:64,paddingTop:8},
+        animation: "shift"
       }}
     >
       <Tabs.Screen

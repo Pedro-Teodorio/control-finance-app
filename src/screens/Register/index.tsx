@@ -27,7 +27,6 @@ export default function RegisterScreen() {
     const passwordHashed = await hashPassword(password);
     try {
       realm.write(() => {
-        console.log(typeof 0.0)
         const created = realm.create("User", {
           _id: uuid.v4(),
           name: name,
@@ -38,8 +37,6 @@ export default function RegisterScreen() {
           created_at: new Date(),
           receives:[]
         });
-
-        console.log("Usuário criado ====>", created);
       });
     } catch {
       console.log("Erro ao criar usuário");

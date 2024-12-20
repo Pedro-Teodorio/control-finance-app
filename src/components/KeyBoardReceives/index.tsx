@@ -4,7 +4,7 @@ import { Container, Key, KeyConfirm, KeyText } from "./styles";
 import { IconButton } from "../IconButton";
 import theme from "@/theme";
 import Icon from "../Icon";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { getRealm } from "@/databases/realm";
 import { IUser } from "@/models/IUser";
 import { useAuth } from "@/hooks/useAuth";
@@ -81,7 +81,7 @@ export function KeyboardReceives({
     } catch {
       console.log("Erro ao criar receita");
     }finally{
-      realm.close()
+      router.replace('/(auth)/home')
     }
 
   
@@ -174,10 +174,11 @@ export function KeyboardReceives({
         <KeyText>0</KeyText>
       </Key>
       <IconButton
+      width="72px"
         nameIcon="Delete"
         colorIcon={theme.COLORS.ZINC_400}
         color="transparent"
-        sizeIcon={42}
+        sizeIcon={52}
         onPress={() => {
           keyPress("delete");
         }}

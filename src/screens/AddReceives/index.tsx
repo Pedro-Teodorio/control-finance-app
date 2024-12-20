@@ -15,10 +15,12 @@ import { StatusBar } from "react-native";
 import theme from "@/theme";
 import { useFocusEffect } from "expo-router";
 import { KeyboardReceives } from "@/components/KeyBoardReceives";
+import { useIsFocused } from "@react-navigation/native";
 
 export default function AddReceivesScreen() {
   const [receives, setReceives] = useState("Despesas");
   const [displayValue, setDisplayValue] = useState("0");
+  const isFocused = useIsFocused();
 
   useFocusEffect(
     useCallback(() => {
@@ -26,7 +28,7 @@ export default function AddReceivesScreen() {
       StatusBar.setBarStyle("light-content");
       setReceives("exit");
       setDisplayValue("0");
-    }, [])
+    }, [isFocused])
   );
 
   function changeColorHeader() {
