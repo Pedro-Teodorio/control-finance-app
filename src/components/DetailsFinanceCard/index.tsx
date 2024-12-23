@@ -24,13 +24,13 @@ export function DetailsFinanceCard({ balance, receives }: Props) {
   const dataFormatada = data.toLocaleString("pt-BR", { dateStyle: "short" });
 
   const entry = receives
-    ?.filter((value) => value.type === "entry" && value.date == dataFormatada)
+    ?.filter((value) => value.type === "entry")
     .reduce((acc, current) => {
       return acc + current.value;
     }, 0);
 
   const exit = receives
-    ?.filter((value) => value.type === "exit" && value.date == dataFormatada)
+    ?.filter((value) => value.type === "exit" )
     .reduce((acc, current) => {
       return acc + current.value;
     }, 0);

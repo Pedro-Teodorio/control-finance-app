@@ -66,15 +66,17 @@ export function KeyboardReceives({
           date: dataFormatada,
           created_at: new Date(),
         });
-        if(selectedUser.balance === 0){
-          selectedUser.balance = receive.value
+       
+        if(selectedUser.balance > 0  && receiveValue === "entry"){
+          selectedUser.balance = selectedUser.balance + receive.value
         }
         if(selectedUser.balance > 0 && receiveValue === "exit"){
           selectedUser.balance = selectedUser.balance - receive.value
         }
 
-        if(selectedUser.balance > 0  && receiveValue === "entry"){
-          selectedUser.balance = selectedUser.balance + receive.value
+
+        if(selectedUser.balance === 0 && receiveValue === "entry"){
+          selectedUser.balance = receive.value
         }
         selectedUser.receives.push(receive);
       });

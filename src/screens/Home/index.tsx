@@ -2,7 +2,6 @@ import React, { useCallback, useEffect, useState } from "react";
 import {
   Container,
   Content,
-  
   Greeting,
   GreetingSection,
   Header,
@@ -22,10 +21,20 @@ import { DetailsFinanceCard } from "@/components/DetailsFinanceCard";
 import { useFocusEffect } from "expo-router";
 import { Transactions } from "@/components/Transactions";
 import { useIsFocused } from "@react-navigation/native";
+import { CalenderModal } from "@/components/CalenderModal";
+import { Database } from "lucide-react-native";
 
 export default function HomeScreen() {
   const [user, setUser] = useState<IUser>();
-  const isFocused = useIsFocused()
+  const [receiveDate, setReceivesDate] = useState(
+    new Date().toLocaleString("pt-BR", { dateStyle: "short" })
+  );
+  const [modalVisible, setModalVisible] = useState(false);
+  const receivesFilterDate = user?.receives.filter(
+    (receive) => receive.date === receiveDate
+  );
+
+  const isFocused = useIsFocused();
   const { token, addToken } = useAuth();
 
   async function fetchUser() {
@@ -42,18 +51,27 @@ export default function HomeScreen() {
       StatusBar.setBackgroundColor(theme.COLORS.EMERALD_500);
       StatusBar.setBarStyle("light-content");
       fetchUser();
-    }, [isFocused])
+    }, [isFocused, receiveDate])
   );
 
   async function logout() {
     await SecureStore.deleteItemAsync("authToken");
     addToken("");
   }
+
+  function filterMovements(dateSelected: Date) {
+    let date = new Date(dateSelected);
+    let onlyDate = date.valueOf() + date.getTimezoneOffset() * 60 * 1000;
+    let dateFormatted = new Date(onlyDate).toLocaleString("pt-BR", {
+      dateStyle: "short",
+    });
+
+    setReceivesDate(dateFormatted);
+  }
   return (
     <Container>
       <StatusBar animated />
       <Header>
-      
         <GreetingSection>
           <UserInitial>
             <Initial>{user?.name[0].toUpperCase()}</Initial>
@@ -72,14 +90,21 @@ export default function HomeScreen() {
           sizeIcon={20}
           onPress={logout}
         />
-        
-      
-        
-        
       </Header>
       <Content>
-      <DetailsFinanceCard balance={user?.balance} receives={user?.receives} />
-      <Transactions receives={user?.receives}/>
+        <DetailsFinanceCard
+          balance={user?.balance}
+          receives={receivesFilterDate}
+        />
+        <Transactions
+          receives={receivesFilterDate}
+          modalVisible={setModalVisible}
+        />
+        <CalenderModal
+          isVisible={modalVisible}
+          setVisible={setModalVisible}
+          handleFilter={filterMovements}
+        />
       </Content>
     </Container>
   );
